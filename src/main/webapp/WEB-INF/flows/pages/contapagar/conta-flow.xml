@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    <persistence-context/>
+    <view-state id="contaList">
+        <on-entry>
+            <evaluate expression="contaController.newFiltro()" result="viewScope.filtro"/>
+        </on-entry>
+        <on-render>
+            <evaluate expression="contaController.filtrar(filtro)" result="viewScope.contas" result-type="dataModel"/>
+        </on-render>
+        <transition on="novoConta" to="contaEdit">
+            <evaluate expression="contaController.newConta()" result="flowScope.conta"/>
+        </transition>
+        <transition on="editarConta" to="contaEdit">
+            <evaluate expression="contas.selectedRow" result="flowScope.conta"/>
+        </transition>
+    </view-state>
+
+    <view-state id="contaEdit">
+        <transition on="salvar" to="ok">
+            <evaluate expression="contaController.salvar(conta)"/>
+        </transition>
+
+        <transition on="cancelar" to="cancel" />
+    </view-state>
+    <end-state id="ok" commit="true"/>
+    <end-state id="cancel"/>
+</flow>

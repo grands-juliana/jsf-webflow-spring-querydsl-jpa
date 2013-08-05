@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    <persistence-context />
+
+    <view-state id="funcionarioList">
+        <on-entry>
+            <evaluate expression="funcionarioController.newFiltro()" result="viewScope.filtro"/>
+        </on-entry>
+        <on-render>
+            <evaluate expression="funcionarioController.filtrar(filtro)" result="viewScope.funcionarios" result-type="dataModel"/>
+        </on-render>
+        <transition on="filtrar">
+
+        </transition>
+        <transition on="novoFuncionario" to="funcionarioEdit">
+            <evaluate expression="pessoaController.newPessoa()" result="flowScope.pessoa" />
+            <evaluate expression="funcionarioController.newFuncionario(pessoa)" result="flowScope.funcionario" />
+            <evaluate expression="pessoaController.newEndereco(pessoa)" result="flowScope.endereco" />
+            <evaluate expression="pessoaController.newEnderecoEletronico(pessoa)" result="flowScope.enderecoEletronico" />
+            <evaluate expression="pessoaController.newContato(pessoa)" result="flowScope.contato" />
+        </transition>
+        <transition on="editarFuncionario" to="funcionarioEdit">
+            <evaluate expression="funcionarios.selectedRow" result="flowScope.funcionario" />
+        </transition>
+    </view-state>
+
+    <view-state id="funcionarioEdit">
+        <on-entry>
+            <evaluate expression="funcionario.pessoa.enderecos" result="viewScope.enderecos" result-type="dataModel"/>
+            <evaluate expression="funcionario.pessoa.enderecoEletronicos" result="viewScope.enderecoEletronicos" result-type="dataModel"/>
+            <evaluate expression="funcionario.pessoa.contatos" result="viewScope.contatos" result-type="dataModel"/>
+        </on-entry>
+
+        <transition on="salvar" to="ok">
+            <evaluate expression="pessoaValidator.validate(funcionario.pessoa, messageContext)"/>
+            <evaluate expression="funcionarioController.salvar(funcionario)" />
+        </transition>
+
+        <transition on="adicionarEndereco">
+            <evaluate expression="funcionario.pessoa.addEndereco(endereco)"/>
+            <evaluate expression="funcionario.pessoa.enderecos" result="viewScope.enderecos" result-type="dataModel"/>
+            <set name="flowScope.endereco" value="null"/>
+        </transition>
+        <transition on="adicionarEnderecoEletronico">
+            <evaluate expression="funcionario.pessoa.addEnderecoEletronico(enderecoEletronico)"/>
+            <evaluate expression="funcionario.pessoa.enderecoEletronicos" result="viewScope.enderecoEletronicos" result-type="dataModel"/>
+            <set name="flowScope.enderecoEletronico" value="null"/>
+        </transition>
+        <transition on="adicionarContato">
+            <evaluate expression="funcionario.pessoa.addContato(contato)"/>
+            <evaluate expression="funcionario.pessoa.contatos" result="viewScope.contatos" result-type="dataModel"/>
+            <set name="flowScope.contato" value="null"/>
+        </transition>
+
+        <transition on="novoEndereco">
+            <evaluate expression="pessoaController.newEndereco(pessoa)" result="flowScope.endereco"/>
+        </transition>
+        <transition on="novoEnderecoEletronico">
+            <evaluate expression="pessoaController.newEnderecoEletronico(pessoa)" result="flowScope.enderecoEletronico"/>
+        </transition>
+        <transition on="novoContato">
+            <evaluate expression="pessoaController.newContato(pessoa)" result="flowScope.contato"/>
+        </transition>
+
+        <transition on="editarEndereco">
+            <evaluate expression="enderecos.selectedRow" result="flowScope.endereco"/>
+        </transition>
+        <transition on="editarEnderecoEletronico">
+            <evaluate expression="enderecoEletronicos.selectedRow" result="flowScope.enderecoEletronico"/>
+        </transition>
+        <transition on="editarContato">
+            <evaluate expression="contatos.selectedRow" result="flowScope.contato"/>
+        </transition>
+
+        <transition on="removerEndereco">
+            <evaluate expression="funcionario.pessoa.removeEndereco(enderecos.selectedRow)"/>
+            <evaluate expression="funcionario.pessoa.enderecos" result="viewScope.enderecos" result-type="dataModel"/>
+        </transition>
+        <transition on="removerEnderecoEletronico">
+            <evaluate expression="funcionario.pessoa.removeEnderecoEletronico(enderecoEletronicos.selectedRow)"/>
+            <evaluate expression="funcionario.pessoa.enderecoEletronicos" result="viewScope.enderecoEletronicos" result-type="dataModel"/>
+        </transition>
+        <transition on="removerContato">
+            <evaluate expression="funcionario.pessoa.removeContato(contatos.selectedRow)"/>
+            <evaluate expression="funcionario.pessoa.contatos" result="viewScope.contatos" result-type="dataModel"/>
+        </transition>
+
+        <transition on="cancelar" to="cancel" />
+    </view-state>
+
+    <end-state id="ok" commit="true" />
+    <end-state id="cancel" />
+</flow>

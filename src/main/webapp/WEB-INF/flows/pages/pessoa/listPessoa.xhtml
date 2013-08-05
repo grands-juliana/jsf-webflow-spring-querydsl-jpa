@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template/blank.xhtml">
+    <ui:define name="body">
+        <h:form>
+            <p:panel header="Lista Pessoa">
+                <p:inputText value="#{filtro.value}"/>
+                <p:commandButton value="Filtrar" action="filtrar" update="@form"/>
+
+                <p:dataTable value="#{pessoas}" var="pessoa">
+                    <p:column headerText="Cpf/Cnpj">
+                        <h:outputText value="#{pessoa.cpfCnpj}" converter="cpfCnpjConverter"/>
+                    </p:column>
+                    <p:column headerText="Razão">
+                        <h:outputText value="#{pessoa.nomeRazaoSocial}" converter="razaoConverter"/>
+                    </p:column>
+                    <p:column headerText="Fantasia">
+                        <h:outputText value="#{pessoa.apelidoFantasia}" converter="razaoConverter"/>
+                    </p:column>
+                    <p:column headerText="Inscrição">
+                        <h:outputText value="#{pessoa.inscricaoEstadual}" converter="inscricaoConverter"/>
+                    </p:column>
+                    <p:column >
+                        <p:commandButton value="Editar" action="editarPessoa"/>
+                    </p:column>
+                </p:dataTable>
+                <p:commandButton value="Novo" action="novoPessoa"/>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

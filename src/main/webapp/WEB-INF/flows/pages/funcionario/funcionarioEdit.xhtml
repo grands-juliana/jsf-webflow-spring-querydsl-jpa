@@ -1,0 +1,217 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template/blank.xhtml">
+    <ui:define name="body">
+        <h:form id="formfuncionario">
+            <p:panel id="panelfuncionario" header="Pessoa">
+                <h:panelGrid columns="3">
+                    <h:outputLabel value="Tipo Pessoa" for="tipoPessoa"/>
+                    <p:selectOneMenu id="tipoPessoa" value="#{funcionario.pessoa.tipoPessoa}" required="true">
+                        <f:selectItem itemLabel="Selecione um tipo" />
+                        <f:selectItems value="#{typeActionConverter.itemsPessoa}" var="item" itemLabel="#{item.descricao}" itemValue="#{item}"/>
+                    </p:selectOneMenu>
+                    <p:message for="tipoPessoa" />
+                    <h:outputLabel value="Cpf/Cnpj" for="cpfCnpj"/>
+                    <p:inputText id="cpfCnpj" value="#{funcionario.pessoa.cpfCnpj}" converter="cpfCnpjConverter"/>
+                    <p:message for="cpfCnpj" />
+                    <h:outputLabel value="Razão" for="razao"/>
+                    <p:inputText id="razao" value="#{funcionario.pessoa.nomeRazaoSocial}" converter="razaoConverter"/>
+                    <p:message for="razao" />
+                    <h:outputLabel value="Fantasia" for="fantasia"/>
+                    <p:inputText id="fantasia" value="#{funcionario.pessoa.apelidoFantasia}" converter="razaoConverter"/>
+                    <p:message for="fantasia" />
+                    <h:outputLabel value="Inscrição" for="inscricao"/>
+                    <p:inputText id="inscricao" value="#{funcionario.pessoa.inscricaoEstadual}" converter="inscricaoConverter"/>
+                    <p:message for="inscricao" />
+                    <h:outputLabel value="Observação" for="observacao"/>
+                    <p:inputText id="observacao" value="#{funcionario.pessoa.observacao}" />
+                    <p:message for="observacao" />
+                    <h:outputLabel value="Ativo" for="enable"/>
+                    <p:selectBooleanCheckbox id="enable" value="#{funcionario.enable}" />
+                    <p:message for="enable" />
+                    <h:outputLabel value="Data Admissão" for="dataAdmissao"/>
+                    <p:calendar id="dataAdmissao" value="#{funcionario.dataAdmissao}" navigator="true"/>
+                    <p:message for="dataAdmissao" />
+
+                </h:panelGrid>
+                <p:commandButton value="Salvar" action="salvar" update="@form"/>
+            </p:panel>
+        </h:form>
+        <h:form id="formendereco">
+            <p:panel id="panelenderecos" header="Endereços" rendered="#{empty endereco}">
+                <p:dataTable value="#{enderecos}" var="e">
+                    <p:column headerText="Tipo endereço">
+                        <h:outputText value="#{e.tipoEndereco}"/>
+                    </p:column>
+                    <p:column headerText="Tipo logradouro">
+                        <h:outputText value="#{e.tipoLogradouro}"/>
+                    </p:column>
+                    <p:column headerText="Endereço">
+                        <h:outputText value="#{e.logradouro}"/>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton value="Editar" action="editarEndereco" update="@form"/>
+                        <p:commandButton value="Remover" action="removerEndereco" update="@form"/>
+                    </p:column>
+                </p:dataTable>
+                <p:commandButton value="Novo" action="novoEndereco" update="@form"/>
+            </p:panel>
+            <p:panel id="panelendereco" header="Endereço" rendered="#{not empty endereco}">
+                <h:panelGrid columns="3">
+                    <p:outputLabel value="Cep" for="cep"/>
+                    <p:inputText id="cep" value="#{endereco.cep}" converter="cepConverter"/>
+                    <p:message for="cep" />
+
+                    <p:outputLabel value="Tipo Endereço" for="tipoEnd"/>
+                    <p:selectOneMenu id="tipoEnd" value="#{endereco.tipoEndereco}" required="true">
+                        <f:selectItem itemLabel="Selecione um tipo" />
+                        <f:selectItems value="#{typeActionConverter.itemsEndereco}" var="e" itemLabel="#{e.descricao}" itemValue="#{e}"/>
+                    </p:selectOneMenu>
+                    <p:message for="tipoEnd" />
+
+                    <p:outputLabel value="Tipo Logradouro" for="tipoLog"/>
+                    <p:selectOneMenu id="tipoLog" value="#{endereco.tipoLogradouro}">
+                        <f:selectItem itemLabel="Selecione um tipo"/>
+                        <f:selectItems value="#{typeActionConverter.itemsLogradouro}" var="l" itemLabel="#{l.descricao}" itemValue="#{l}"/>
+                    </p:selectOneMenu>
+                    <p:message for="tipoLog" />
+
+                    <p:outputLabel value="Logradouro" for="log"/>
+                    <p:inputText id="log" value="#{endereco.logradouro}"/>
+                    <p:message for="log" />
+
+                    <p:outputLabel value="Número" for="num"/>
+                    <p:inputText id="num" value="#{endereco.numero}"/>
+                    <p:message for="num" />
+
+                    <p:outputLabel value="Complemento" for="comp"/>
+                    <p:inputText id="comp" value="#{endereco.complemento}"/>
+                    <p:message for="comp" />
+
+                    <p:outputLabel value="Bairro" for="bairro"/>
+                    <p:inputText id="bairro" value="#{endereco.bairro}"/>
+                    <p:message for="bairro" />
+
+                </h:panelGrid>
+                <p:commandButton value="Adicionar" action="adicionarEndereco" update="@form"/>
+            </p:panel>
+        </h:form>
+        <h:form id="formContato">
+            <p:panel id="panelContatos" header="Contatos" rendered="#{empty contato}">
+                <p:dataTable id="tableContato" value="#{contatos}" var="c">
+                     <p:column headerText="Telefone">
+                         <h:outputText id="outputTel" value="#{c.telefone}" converter="telefoneConverter"/>
+                    </p:column>
+                    <p:column headerText="Tipo Telefone">
+                        <h:outputText value="#{c.tipoTelefone.descricao}"/>
+                    </p:column>
+                    <p:column headerText="Tipo Operadora">
+                        <h:outputText value="#{c.tipoOperadora.descricao}"/>
+                    </p:column>
+                    <p:column headerText="Celular">
+                        <h:outputText value="#{c.celular == true ? 'Celular' : 'Fixo'}"/>
+                    </p:column>
+                    <p:column headerText="Responsável">
+                        <h:outputText value="#{c.responsavel}"/>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton id="buttonEditaContato" value="Editar" action="editarContato" update="@form"/>
+                        <p:commandButton id="buttonRemoveContato" value="Remover" action="removerContato" update="@form"/>
+                    </p:column>
+                </p:dataTable>
+                <p:commandButton id="buttonNovoContato" value="Novo" action="novoContato" update="@form"/>
+            </p:panel>
+            <p:panel id="panelContato" header="Contato" rendered="#{not empty contato}">
+                <h:panelGrid id="gridContato" columns="3">
+                    <h:outputLabel value="Celular" for="checkCelular"/>
+                    <p:selectBooleanCheckbox id="checkCelular" value="#{contato.celular}"/>
+                    <p:message for="checkCelular"/>
+
+                    <h:outputLabel value="Tipo operadora" for="onemenutipoOperadora"/>
+                    <p:selectOneMenu id="onemenutipoOperadora"  value="#{contato.tipoOperadora}">
+                        <f:selectItem itemLabel="Selecione um tipo"/>
+                        <f:selectItems value="#{typeActionConverter.itemsOperadora}" var="op" itemLabel="#{op.descricao}" itemValue="#{op}"/>
+                    </p:selectOneMenu>
+                    <p:message for="onemenutipoOperadora"/>
+
+                    <h:outputLabel value="Tipo telefone" for="onemenutipoTelefone"/>
+                    <p:selectOneMenu id="onemenutipoTelefone" value="#{contato.tipoTelefone}">
+                        <f:selectItem itemLabel="Selecione um tipo"/>
+                        <f:selectItems value="#{typeActionConverter.itemsTelefone}" var="tel" itemValue="#{tel}" itemLabel="#{tel.descricao}"/>
+                    </p:selectOneMenu>
+                    <p:message for="onemenutipoTelefone"/>
+
+                    <h:outputLabel value="Telefone" for="inputtelefone"/>
+                    <p:inputText id="inputtelefone" value="#{contato.telefone}" converter="telefoneConverter"/>
+                    <p:message for="inputtelefone"/>
+
+                    <h:outputLabel value="Responsável" for="inputresponsavel"/>
+                    <p:inputText id="inputresponsavel" value="#{contato.responsavel}"/>
+                    <p:message for="inputresponsavel"/>
+                </h:panelGrid>
+                <p:commandButton value="Adicionar" action="adicionarContato" update="@form"/>
+            </p:panel>
+        </h:form>
+        <!--EnderecoEletronico-->
+        <h:form id="formEnderecoEletronico">
+            <p:panel id="panelEnderecoEletronicos" header="Endereços eletrônicos" rendered="#{empty enderecoEletronico}">
+                <p:dataTable id="tableEnderecoEletronico" value="#{enderecoEletronicos}" var="ee">
+                    <p:column headerText="Tipo Endereço Eletronico">
+                        <h:outputText  value="#{ee.tipoEnderecoEletronico}"/>
+                    </p:column>
+                    <p:column headerText="Tipo E-mail">
+                        <h:outputText value="#{ee.tipoEmail}"/>
+                    </p:column>
+                    <p:column headerText="Endereço">
+                        <h:outputText value="#{ee.descricao}"/>
+                    </p:column>
+                    <p:column headerText="E-mail">
+                        <h:outputText value="#{ee.email}" converter="emailConverter"/>
+                    </p:column>
+                    <p:column headerText="Responsável">
+                        <h:outputText value="#{ee.responsavel}"/>
+                    </p:column>
+
+                    <p:column>
+                        <p:commandButton id="buttonEditaEndElet" value="Editar" action="editarEnderecoEletronico" update="@form"/>
+                        <p:commandButton id="buttonRemoveEndElet" value="Remover" action="removerEnderecoEletronico" update="@form"/>
+                    </p:column>
+                </p:dataTable>
+                <p:commandButton id="buttonNovoEndElet" value="Novo" action="novoEnderecoEletronico" update="@form"/>
+            </p:panel>
+            <p:panel id="panelEnderecoEletronico" header="Endereço eletrônico" rendered="#{not empty enderecoEletronico}">
+                <h:panelGrid id="gridEnderecoEletronico" columns="3">
+                    <h:outputLabel value="Tipo endereço eletrônico" for="onemenutipoEnderecoEletronico"/>
+                    <p:selectOneMenu id="onemenutipoEnderecoEletronico" value="#{enderecoEletronico.tipoEnderecoEletronico}">
+                        <f:selectItem itemLabel="Selecione um tipo"/>
+                        <f:selectItems value="#{typeActionConverter.itemsEnderecoEletronico}" var="endEl" itemLabel="#{endEl.descricao}" itemValue="#{endEl}"/>
+                    </p:selectOneMenu>
+                    <p:message for="onemenutipoEnderecoEletronico"/>
+
+                    <h:outputLabel value="Tipo E-mail" for="onemenutipoEmail"/>
+                    <p:selectOneMenu id="onemenutipoEmail" value="#{enderecoEletronico.tipoEmail}">
+                        <f:selectItem itemLabel="Selecione um tipo"/>
+                        <f:selectItems value="#{typeActionConverter.itemsEmail}" var="email" itemLabel="#{email.descricao}" itemValue="#{email}"/>
+                    </p:selectOneMenu>
+                    <p:message for="onemenutipoEmail"/>
+
+                    <h:outputLabel value="Endereço" for="inputdescricao"/>
+                    <p:inputText id="inputdescricao" value="#{enderecoEletronico.descricao}"/>
+                    <p:message for="inputdescricao"/>
+
+                    <h:outputLabel value="E-mail" for="inputemail"/>
+                    <p:inputText id="inputemail" value="#{enderecoEletronico.email}" converter="emailConverter"/>
+                    <p:message for="inputemail"/>
+
+                    <h:outputLabel value="Responsável" for="inputresponsavelEE"/>
+                    <p:inputText id="inputresponsavelEE" value="#{enderecoEletronico.responsavel}"/>
+                    <p:message for="inputresponsavelEE"/>
+                </h:panelGrid>
+                <p:commandButton id="buttonAddEndElet" value="Adicionar" action="adicionarEnderecoEletronico" update="@form"/>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

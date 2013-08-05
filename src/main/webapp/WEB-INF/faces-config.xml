@@ -1,8 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <faces-config xmlns="http://java.sun.com/xml/ns/javaee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
-	version="2.1">
-
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
+              version="2.1">
+    <!--Cep-->
+    <converter>
+        <converter-id>cepConverter</converter-id>
+        <converter-class>br.com.yanaga.jsf_webflow_spring_querydsl_jpa.app.pessoa.endereco.CepConverter</converter-class>
+    </converter>
+    <!--Cpf/Cnpj-->
+    <converter>
+        <converter-id>cpfCnpjConverter</converter-id>
+        <converter-class>br.com.yanaga.jsf_webflow_spring_querydsl_jpa.app.pessoa.CpfCnpjConverter</converter-class>
+    </converter>
+    <!--Desconto-->
+    <converter>
+        <converter-id>descontoConverter</converter-id>
+        <converter-class>br.com.yanaga.jsf_webflow_spring_querydsl_jpa.app.conta.desconto.DescontoConverter</converter-class>
+    </converter>
+    <!--Email-->
+    <converter>
+        <converter-id>emailConverter</converter-id>
+        <converter-class>br.com.yanaga.jsf_webflow_spring_querydsl_jpa.app.pessoa.enderecoeletronico.EmailConverter</converter-class>
+    </converter>
+    <!--Inscricao-->
+    <converter>
+        <converter-id>inscricaoConverter</converter-id>
+        <converter-class>br.com.yanaga.jsf_webflow_spring_querydsl_jpa.app.pessoa.InscricaoConverter</converter-class>
+    </converter>
+    <!--Juros-->
+    <converter>
+        <converter-id>jurosConverter</converter-id>
+        <converter-class>br.com.yanaga.jsf_webflow_spring_querydsl_jpa.app.conta.juros.JurosConverter</converter-class>
+    </converter>
+    <!--Multa-->
+    <converter>
+        <converter-id>multaConverter</converter-id>
+        <converter-class>br.com.yanaga.jsf_webflow_spring_querydsl_jpa.app.conta.parcela.MultaConverter</converter-class>
+    </converter>
+    <!--Porcentagem Juros-->
+    <converter>
+        <converter-id>porcentagemJurosConverter</converter-id>
+        <converter-class>br.com.yanaga.jsf_webflow_spring_querydsl_jpa.app.conta.juros.PorcentagemJurosConverter</converter-class>
+    </converter>
+    <!--Razao-->
+    <converter>
+        <converter-id>razaoConverter</converter-id>
+        <converter-class>br.com.yanaga.jsf_webflow_spring_querydsl_jpa.app.pessoa.NomeRazaoSocialConverter</converter-class>
+    </converter>
+    <!--Total Parcela-->
+    <converter>
+        <converter-id>totalParcelaConverter</converter-id>
+        <converter-class>br.com.yanaga.jsf_webflow_spring_querydsl_jpa.app.conta.parcela.TotalParcelaConverter</converter-class>
+    </converter>
+    <!--Telefone-->
+    <converter>
+        <converter-id>telefoneConverter</converter-id>
+        <converter-class>br.com.yanaga.jsf_webflow_spring_querydsl_jpa.app.pessoa.contato.TelefoneConverter</converter-class>
+    </converter>
+    <!--Valor-->
+    <converter>
+        <converter-id>valorConverter</converter-id>
+        <converter-class>br.com.yanaga.jsf_webflow_spring_querydsl_jpa.app.conta.valor.ValorConverter</converter-class>
+    </converter>
 </faces-config>

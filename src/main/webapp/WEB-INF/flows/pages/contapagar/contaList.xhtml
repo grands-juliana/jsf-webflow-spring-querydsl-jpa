@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template/blank.xhtml">
+
+    <ui:define name="body">
+        <h:form id="formConta">
+            <p:panel id="panelConta" header="Lista Contas">
+                <p:inputText value="#{filtro.value}"/>
+                <p:commandButton value="Filtrar" action="filtrar" update="@form"/>
+
+                <p:dataTable value="#{contas}" var="c">
+                    <p:column headerText="Nome">
+                        <h:outputText value="#{c.pessoa.nomeRazaoSocial}" converter="razaoConverter"/>
+                    </p:column>
+                    <p:column headerText="Situacao">
+                        <h:outputText value="#{c.situacaoConta}"/>
+                    </p:column>
+                    <p:column headerText="Origem">
+                        <h:outputText value="#{c.origemConta}" />
+                    </p:column>
+                    <p:column headerText="Valor">
+                        <h:outputText value="#{c.valorTotal}" />
+                    </p:column>
+                    <p:column >
+                        <p:commandButton value="Editar" action="editarConta"/>
+                    </p:column>
+                </p:dataTable>
+                <p:commandButton value="Novo" action="novoConta"/>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
